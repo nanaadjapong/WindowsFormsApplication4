@@ -49,7 +49,7 @@ namespace WindowsFormsApplication4
         private void Form1_Load(object sender, EventArgs e)
         {
             //STEP 1
-            webbMain.Navigate("http://wgp-selma-ap1:9080/LogAnalyzer/posEntry.jsp");
+            webbMain.Navigate("http://wgp-selma-ap1:9080/LogAnalyzer/posEntry.jsp"); // THIS WEBSITE WONT WORK ON YOURS BECAUSE ITS A PRIVATE WEBSITE
 
             DateTime end = DateTime.Now;
 
@@ -107,28 +107,10 @@ namespace WindowsFormsApplication4
             }
 
             ////Step 5  New Pop Up
-            popup.Navigate(p); // using string builer to open another webbrowser
+            popup.Navigate(p); // using string builder to open another webbrowser
         }
 
-        public void hitKey()
-        {
-
-            browser.Link(Find.ByText("File Download")).ClickNoWait();
-
-            Thread.Sleep(1000);
-            AutomationElementCollection dialogElements = AutomationElement.FromHandle(FindWindow(null, "Internet Explorer")).FindAll(TreeScope.Children, Condition.TrueCondition);
-            foreach (AutomationElement element in dialogElements)
-            {
-                if (element.Current.Name.Equals("Save"))
-                {
-                    var invokePattern = element.GetCurrentPattern(InvokePattern.Pattern) as InvokePattern;
-                    invokePattern.Invoke();
-
-                }
-            }
-
-
-        }
+        
        public  static void DownLoadFile(IE browser)
         {
             browser.Link(Find.ByText("File Download")).ClickNoWait();
@@ -158,8 +140,8 @@ namespace WindowsFormsApplication4
                     if (d.GetAttribute("value").Equals("Export All to Excel"))
                     {
 
-                        d.InvokeMember("click");
-
+                        d.InvokeMember("click"); // THIS OPENS A FILE DOWNLOAD POPUP WINDOW WHICH HAS THE "OPEN" "SAVE" "CANCEL"
+                                                 //  I AM STUCK HERE !!
 
                         //hitKey();
                         //SendKeys.SendWait("{LEFT}");
@@ -178,25 +160,19 @@ namespace WindowsFormsApplication4
             //SetTimer();
         }
 
-        public static void SetTimer()
-        {
-            aTimer = new System.Timers.Timer(2000);
-            aTimer.Elapsed += OnTimeEvent;
-        }
+       /
 
-        private static void OnTimeEvent(Object source, ElapsedEventArgs e)
-        {
-            WindowsHelper.DownloadIEFile("Save", "D", "kpkp");
-            aTimer.Stop();
-            aTimer.Dispose();
-        }
+
+       // 
+       //   THE METHOD BELOW IS THE FINAL STAGE OF THE PROGRAM, I WANT IT TO AUTOMATICALLY CLICK THE SAVE BUTTON
+       //    OF THE FILE DOWNLOAD WINDOW
 
         public void DownLoadFile(string strWindowTitle)
         {
             
 
-            SendKeys.SendWait("{LEFT}");
-            SendKeys.SendWait("{ENTER}");
+            
+            
             
             IntPtr TargetHandle = FindWindowByCaption(IntPtr.Zero , strWindowTitle);
             AutomationElementCollection ParentElements = AutomationElement.FromHandle(TargetHandle).FindAll(TreeScope.Children, Condition.TrueCondition);
